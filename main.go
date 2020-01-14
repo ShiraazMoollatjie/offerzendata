@@ -20,7 +20,7 @@ func main() {
 
 	oc := &offerzenClient{
 		http:    &http.Client{},
-		baseUrl: "https://www.offerzen.com/api",
+		baseURL: "https://www.offerzen.com/api",
 		token:   token,
 	}
 
@@ -30,7 +30,7 @@ func main() {
 		panic("Error with retrieving company list from offerzen.")
 	}
 
-	log.Print("Scraping offerzen company data")
+	log.Print("Scraping offerzen company data.")
 	var cl []company
 	for i := 1; i <= meta.PaginationInfo.TotalPages; i++ {
 		log.Println("Retrieving page ", i)
@@ -49,24 +49,24 @@ func main() {
 
 	b, err := json.MarshalIndent(&o, "", " ")
 	if err != nil {
-		panic("Error with marshalling offerzen data as json")
+		panic("Error with marshalling offerzen data as json.")
 	}
 
 	err = ioutil.WriteFile("offerzendata.json", b, 0644)
 	if err != nil {
-		panic("Error with writing offerzendata.json")
+		panic("Error with writing offerzendata.json.")
 	}
 }
 
 // offerzenClient is the http client for accessing the offerzen public api.
 type offerzenClient struct {
 	http    *http.Client
-	baseUrl string
+	baseURL string
 	token   string
 }
 
 func (oc offerzenClient) getPublicProfiles(page int) (*publicProfileResp, error) {
-	url := fmt.Sprintf("%s/company/public_profiles?page=%d", oc.baseUrl, page)
+	url := fmt.Sprintf("%s/company/public_profiles?page=%d", oc.baseURL, page)
 	req, err := http.NewRequest(http.MethodGet, url, nil)
 	if err != nil {
 		return nil, err
